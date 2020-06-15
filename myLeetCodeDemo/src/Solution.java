@@ -857,102 +857,133 @@ class Solution {
         return null;
     }
 
+    /**
+     * 合并区间  leetcode 56题
+     * 输入: [[1,3],[2,6],[8,10],[15,18]]
+     * 输出: [[1,6],[8,10],[15,18]]
+     * 解释: 区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+     *
+     * @param intervals
+     */
+    public static int[][] merge(int[][] intervals) {
+        //给二维数组排序
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        // 遍历区间
+        int[][] res = new int[intervals.length][2];
+        int idx = -1;
+        for (int[] interval: intervals) {
+            // 如果结果数组是空的，或者当前区间的起始位置 > 结果数组中最后区间的终止位置，
+            // 则不合并，直接将当前区间加入结果数组。
+            if (idx == -1 || interval[0] > res[idx][1]) {
+                res[++idx] = interval;
+            } else {
+                // 反之将当前区间合并至结果数组的最后区间
+                res[idx][1] = Math.max(res[idx][1], interval[1]);
+            }
+        }
+        return Arrays.copyOf(res, idx + 1);
+    }
+
+    /**
+     * 200. 岛屿数量
+     * @param grid
+     * @return
+     */
+    public static int numIslands(char[][] grid) {
+        int count = 0;
+        //只对下和右遍历
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+        Queue<int[]> queue = new ArrayDeque<>();
+        int n = grid.length;
+        //把所有的陆地入队
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j]=='1'){
+                    queue.offer(new int[] {i, j});
+                }
+            }
+        }
+
+        if (queue.size()==0){//没有陆地
+            return 0;
+        }
+        if(queue.size()==n*n){//全是1
+            return 1;
+        }
+
+        //开始遍历
+        int[] point = null;
+        boolean isHaveRoad = false;
+        while (!queue.isEmpty()){
+            point = queue.poll();
+            int x = point[0], y = point[1];
+            // 取出队列的元素，将其四周的海洋入队。
+            for (int i = 0; i < 4; i++) {
+                int newX = x + dx[i];
+                int newY = y + dy[i];
+                if (newX < 0 || newX >= n || newY < 0 || newY >= n || grid[newX][newY] != 0) {
+                    isHaveRoad = true;
+                    continue;
+                }
+            }
+            if (!isHaveRoad){
+                count++;
+            }
+            isHaveRoad = false;
+        }
+        return count+1;
+    }
+
+    public static int numberOfSubarrays(int[] nums, int k) {
+
+        return 0;
+    }
+
+    /**
+     * 按摩师
+     * @param nums
+     * @return
+     */
+    public static int massage(int[] nums) {
+        if (nums.length==0){
+            return 0;
+        }
+        if (nums.length==1){
+            return nums[0];
+        }
+        if (nums.length==2){
+            return Math.max(nums[0],nums[1]);
+        }
+        int[] dp = new int[nums.length+1];
+        dp[0]=nums[0];
+        dp[1]=Math.max(dp[0],nums[1]);
+        for (int i = 2; i <nums.length; i++) {
+            dp[i] = Math.max(dp[i-2]+nums[i],dp[i-1]);
+        }
+        return dp[nums.length-1];
+    }
+
+    /**
+     * 121. 买卖股票的最佳时机
+     * @param prices
+     * @return
+     */
+    public int maxProfit_2(int[] prices) {
+
+        return 0;
+    }
     public static void main(String[] args) {
-        System.out.println(Solution.climbStairs(4));
-//        System.out.println(Solution.longestCommonPrefix(new String[]{"ffnd","ff","ff"}));
-        //13112221  1113213211  31131211131221
-//        System.out.println(Solution.countAndSay(23));
-//        System.out.println(Solution.myAtoi(" -42"));
-//          System.out.println('a'-'z');
+//       int[][] intervals = new int[][]{{1,3},{2,6},{8,10},{15,18}};
+//       char[][] grid = new char[][]{
+//               {'1','1','0','0','0'},
+//               {'1','1','0','0','0'},
+//               {'0','0','1','0','0'},
+//               {'0','0','0','1','1'},
+//       };
+//        System.out.println(numIslands(grid));
 
-//        Solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4});
-//        List<String> list=new ArrayList<>();
-//        list = Solution.letterCombinations("223");
-//        for (String ss: list
-//             ) {
-//            System.out.println(ss);
-//        }
-//        System.out.println(Solution.letterCombinations);
-//        System.out.println(Solution.isPalindrome("0P"));
-//        System.out.println(Solution.isAnagram("anagram","nagaram"));
-//        System.out.println(Solution.reverse(1534236469));
-//         int[] num1 = new int[]{3,2,3};
-//        System.out.println(Solution.majorityElement(num1));
-//          char [][] sudo = new char[][]{{}};
-//        int[] num1 = new int[]{4,9,5};
-//        int[] num2 = new int[]{9,4,9,8,4};
-//        Solution.intersect(num1,num2);
-//        System.out.println(Solution.findMedianSortedArrays(num1,num2));
-//        System.out.println( Solution.isPalindrome(1221));
-//        int [] height = new int[]{1,8,6,2,5,4,8,3,7};
-//        System.out.println(Solution.maxArea(height));
-//        System.out.println(Solution.maxAreaByDouPoint(height));
-//        String s = "loveleetcode";
-//        System.out.println(Solution.firstUniqChar(s));
-//          char[] s = new char[]{'h','e','l','l'};
-//          Solution.reverseString(s);
-//        for (int i = 0; i < s.length; i++) {
-//            System.out.println(s[i]);
-//        }
-//        int[] num = new int[]{1,2,3};
-//        int [] newNum = Solution.plusOne(num);
-//        for (int i = 0; i <newNum.length ; i++) {
-//            System.out.print(newNum[i]);
-//        }
-
-//        Scanner sc = new Scanner(System.in);
-//        do {
-//            int i = sc.nextInt();
-//            System.out.println(Solution.isPowerOfThree(i));
-//        }while (true);
-
-//        for (int i = 1; i <= 2147483647; i++) {
-//            if (Solution.isPowerOfThree(i)){
-//                System.out.println(i);
-//            }
-//
-//        }
-//        int[] nums4 = new int[]{0,1,2,0,4,0};
-//        Solution.moveZeroes(nums4);
-//        for (int i = 0; i <nums4.length ; i++) {
-//            System.out.println(nums4[i]);
-//        }
-//        String s = "loveleetcode";
-//        char c = 'e';
-//        int[] test = Solution.shortestToChar(s,c);
-//        for (int i = 0; i < test.length; i++) {
-//            System.out.println(test[i]);
-//        }
-//
-//        System.out.println(new Date());
-//        int[] nums3 = new int[]{2,2,1};
-//        System.out.println(Solution.containsDuplicate(nums3));
-//        System.out.println(Solution.singleNumber(nums3));
-//        int[] nums = new int[]{0,0,1,1,1,2,2,3,3,4};
-//        int len = Solution.removeDuplicates(nums);
-//
-//        int[] nums2 = new int[]{1,2,3,4,5,6,7};
-//        Solution.rotate(nums2,3);
-//        for (int n: nums
-//             ) {
-//            System.out.println(n);
-//        }
-//        for (int n: nums2
-//                ) {
-//            System.out.println(n);
-//        }
-//        System.out.println(len);
-//        System.out.println(Solution.lengthOfLongestSubstring("dvdf"));
-//        int[] a = new int[10];
-//        for (int i = 0; i < a.length; i++) {
-//            a[i] = i;
-//        }
-//        for (int b:a) {
-//            System.out.println(b);
-//        }
-//        for (String arg: args
-//             ) {
-//            System.out.println(arg);
-//        }
+        int[] nums = new int[]{2,7,9,3,1};
+        System.out.println(massage(nums));
     }
 }
